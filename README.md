@@ -21,5 +21,7 @@ It allows you to create interactive web apps without needing a dedicated server 
 import streamlit as st
 
 st.title("🚀 My Streamlit App on Colab")
+
 st.write("Hello! 👋 This app runs on Google Colab with ngrok.")
+
 print("🌍 Your app is live at:", https://fraud-detection-app-final-data-science-pstobjavzw5hyeexuvy7gh.streamlit.app/)
