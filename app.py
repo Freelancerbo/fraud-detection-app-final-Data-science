@@ -4,22 +4,17 @@ import joblib
 import matplotlib.pyplot as plt
 from datetime import datetime
 
-# ---- Model Load with Error Handling ----
-@st.cache_resource
-def load_model():
-    try:
-        return joblib.load('fraud_detection_model.pkl')
-    except Exception as e:
-        st.error(f"❌ Model file not found: {e}")
-        st.info("Make sure 'fraud_detection_model.pkl' is in the same folder.")
-        st.stop()
+# Load model with error handling
+try:
+    model = joblib.load('fraud_detection_model.pkl')
+except Exception as e:
+    st.error("❌ Model load nahi ho saka. 'fraud_detection_model.pkl' file check karein.")
+    st.stop()
 
-model = load_model()
-
-# ---- Page Config ----
+# Page config
 st.set_page_config(page_title="🛡️ FraudGuard AI", page_icon="🛡️", layout="centered")
 
-# ---- Animated Header ----
+# Animated header
 st.markdown("""
 <style>
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -37,36 +32,33 @@ st.markdown("""
 <div class="animated-by">✨ Built by Tafseer Haider ✨</div>
 """, unsafe_allow_html=True)
 
-# ---- Title ----
+# Title
 st.title("🛡️ AI-Powered Fraud Detection System")
-st.markdown("🔍 Real-time fraud detection using machine learning.")
+st.markdown("🔍 Real-time fraud detection using ML.")
 
-# ---- Sidebar ----
+# Sidebar
 st.sidebar.header("⚡ Quick Actions")
-
 if st.sidebar.button("🎯 Load Fraud Sample"):
-    sample = [-2.3, 1.5, -1.8, 3.2, -0.5, 2000.0]
     for i in range(1, 6):
-        st.session_state[f"v{i}"] = sample[i-1]
-    st.session_state.amount = sample[5]
+        st.session_state[f"v{i}"] = [-2.3, 1.5, -1.8, 3.2, -0.5][i-1]
+    st.session_state.amount = 2000.0
 
 if st.sidebar.button("✅ Load Normal Sample"):
-    sample = [0.0, 0.1, -0.2, 0.3, 0.0, 50.0]
     for i in range(1, 6):
-        st.session_state[f"v{i}"] = sample[i-1]
-    st.session_state.amount = sample[5]
+        st.session_state[f"v{i}"] = [0.0, 0.1, -0.2, 0.3, 0.0][i-1]
+    st.session_state.amount = 50.0
 
 if st.sidebar.button("🗑️ Clear Inputs"):
     for i in range(1, 6):
         st.session_state[f"v{i}"] = 0.0
     st.session_state.amount = 0.0
 
-# ---- Time ----
+# Time
 st.sidebar.markdown("---")
 st.sidebar.write("🕒 Current Time:")
 st.sidebar.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-# ---- Input Fields ----
+# Inputs
 st.subheader("📋 Enter Transaction Details")
 cols = st.columns(3)
 for i in range(1, 6):
@@ -81,7 +73,7 @@ if "amount" not in st.session_state:
     st.session_state.amount = 0.0
 st.number_input("", value=st.session_state.amount, format="%.2f", step=1.0, key="amount")
 
-# ---- Predict Button ----
+# Predict
 st.markdown("---")
 if st.button("🔮 Predict Fraud"):
     try:
@@ -108,9 +100,15 @@ if st.button("🔮 Predict Fraud"):
         st.pyplot(fig)
 
         st.write(f"🔢 Not Fraud: {prob[0]:.4f} | Fraud: {prob[1]:.4f}")
-
     except Exception as e:
         st.error(f"❌ Prediction error: {e}")
-
 else:
     st.info("👉 Enter values or use Quick Actions.")
+
+# Footer
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown(
+    "<p style='text-align: center; color: #BB86FC; font-weight: bold;'>"
+    "🌈 Designed with ❤️ by Tafseer Haider</p>",
+    unsafe_allow_html=True
+)
