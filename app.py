@@ -29,7 +29,7 @@ st.markdown("""
     font-weight: bold;
 }
 </style>
-<div class="animated-by">✨ Built by Tafseer Haider ✨</div>
+<div class="animated-by" color: "green">✨ Built by Tafseer Haider ✨</div>
 """, unsafe_allow_html=True)
 
 # ---- Title ----
